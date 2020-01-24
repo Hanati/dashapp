@@ -1,0 +1,10 @@
+FROM python:3.7
+
+RUN pip install --no-cache fastapi[all] \
+	pg8000
+
+WORKDIR /home
+ADD *.py .
+
+CMD ["uvicorn","api:app"]
+
