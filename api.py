@@ -10,15 +10,15 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
-@app.post("/stock/post/{stock_abv}/{stock_function}")
-def update_stock(stock_abv: str,stock_function: str):
-    #proxies={"http":"clientproxy.basf.net:8080","https":"clientproxy.basf.net:8080"}
+## read the stock, and write a postgres
+@app.post("/stock/post/{stock_abv}/{stock_function}/{alpha_key}")
+def update_stock(stock_abv: str,stock_function: str, alpha_key: str):
     ## get data
     proxies = {}
     api_url = 'https://www.alphavantage.co/query?function='+ stock_function
     if stock_function=='TIME_SERIES_INTRADAY':
         api_url=api_url+'&interval=5min'
-    req_url = ''.join([api_url, '&symbol=', stock_abv, '&apikey=ESSG6XBDKH9XE5WE'])
+    req_url = ''.join([api_url, '&symbol=', stock_abv, '&apikey=', alpha_key])
     response = requests.get(req_url, verify=False, proxies=proxies)
     data=response.json()
 
@@ -37,6 +37,7 @@ def update_stock(stock_abv: str,stock_function: str):
  
     return message
 
+## read from postgres
 @app.get("/stock/get/{stock_abv}/{stock_function}")
 def get_stock(stock_abv:str, stock_function: str):
     p_conn=init_conn()
