@@ -11,7 +11,7 @@ import dash_table
 def get_stock(symbol,interval):
     #proxies={"http":"clientproxy.basf.net:8080","https":"clientproxy.basf.net:8080"}
     proxies={}
-    api_url = 'http://localhost:8000/stock/get'
+    api_url = 'http://api:8000/stock/get'
     req_url = '/'.join([api_url, symbol, interval])
     response = requests.get(req_url, verify=False, proxies=proxies)
     return response.json()
@@ -159,13 +159,13 @@ def display_confirm(n_clicks,input_value):
             'Last 20 years in Week':'TIME_SERIES_WEEKLY',
             'Last 20 years in Month':'TIME_SERIES_MONTHLY'}
     if n_clicks>0:
-        api_url = 'http://localhost:8000/stock/post'
+        api_url = 'http://api:8000/stock/post'
         for title, interval in intervals.items():
-            req_url = '/'.join([api_url, input_value, interval])
+            req_url = '/'.join([api_url, input_value, interval,os.environ.get('mykey')])
             response = requests.post(req_url, verify=False)
         return True
     return False
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True,host='0.0.0.0',port='8050')

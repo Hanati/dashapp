@@ -1,13 +1,14 @@
-import psycopg2
-from psycopg2.extras import execute_batch
+#import psycopg2
+#from psycopg2.extras import execute_batch
+import pg8000
 import numpy as np
 import pandas as pd
 from datetime import date,timedelta
 
 def init_conn():
-    p_conn=psycopg2.connect(
-        host='127.0.0.1',
-        port='5432',
+    p_conn=pg8000.connect(
+        host='db',
+        port=5432,
         user='postgres',
         password='postgres')
     return p_conn
@@ -60,7 +61,7 @@ def insert_to_db(p_conn,tablename,df):
     insert_stmt = "INSERT INTO {} ({}) {}".format(tablename,columns,values)
 
     cur =p_conn.cursor()
-    execute_batch(cur, insert_stmt, df.values)
+    cur.executemany(insert_stmt, df.values)
     p_conn.commit()
     cur.close()
 

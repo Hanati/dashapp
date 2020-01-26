@@ -1,10 +1,11 @@
 FROM python:3.7
 
 RUN pip install --no-cache fastapi[all] \
-	pg8000
+	pg8000 \
+	pandas
 
 WORKDIR /home
-ADD *.py .
+ADD *.py /home/
 
-CMD ["uvicorn","api:app"]
+CMD ["uvicorn","api:app","--host","0.0.0.0"]
 
