@@ -1,0 +1,12 @@
+FROM python:3.7
+
+RUN pip install --no-cache dash \
+        requests \
+        pandas \
+        dash 
+
+WORKDIR /home
+ADD *.py /home/
+
+CMD ["python","main.py"]
+
