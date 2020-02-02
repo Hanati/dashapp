@@ -13,6 +13,7 @@ services:
 
   api:
     image: myapi
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile_API
