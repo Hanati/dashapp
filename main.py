@@ -51,15 +51,6 @@ app.layout = html.Div(children=[
     html.Hr(),
     html.Div([
         dcc.Graph(
-            id='stock-graph-intra',
-            figure={}),
-        dcc.Graph(
-            id='stock-graph-intra-vol',
-            figure={})
-        ],
-        style={'width': '49%', 'display': 'inline-block', 'padding': '0 20'}),
-    html.Div([
-        dcc.Graph(
             id='stock-graph-daily',
             figure={}),
         dcc.Graph(
@@ -76,40 +67,24 @@ app.layout = html.Div(children=[
             id='stock-graph-weekly-vol',
             figure={}
         )],
-        style={'width': '49%', 'display': 'inline-block'}),
-    html.Div([
-        dcc.Graph(
-            id='stock-graph-monthly',
-            figure={}
-        ),
-        dcc.Graph(
-            id='stock-graph-monthly-vol',
-            figure={}
-        )],
         style={'width': '49%', 'display': 'inline-block'})
 ])
 
 @app.callback(
-    [Output('stock-graph-intra', 'figure'),
-     Output('stock-graph-intra-vol', 'figure'),
-     Output('stock-graph-daily', 'figure'),
+    [Output('stock-graph-daily', 'figure'),
      Output('stock-graph-daily-vol', 'figure'),
      Output('stock-graph-weekly','figure'),
      Output('stock-graph-weekly-vol','figure'),
-     Output('stock-graph-monthly','figure'),
-     Output('stock-graph-monthly-vol','figure')
     ],
     [Input('submit-button', 'n_clicks')],
     [State('stock-abv','value')]
 )
 def update_graph(n_clicks, input_value):
     if n_clicks==0:
-        return [{},{},{},{},{},{},{},{}]
+        return [{},{},{},{}]
     
-    intervals={'Intraday':'TIME_SERIES_INTRADAY',
-            'Last 100 days':'TIME_SERIES_DAILY',
-            'Last 20 years in Week':'TIME_SERIES_WEEKLY',
-            'Last 20 years in Month':'TIME_SERIES_MONTHLY'}
+    intervals={'Last 100 days':'TIME_SERIES_DAILY',
+            'Last 20 years in Week':'TIME_SERIES_WEEKLY'}
 
     figures=[]
     for title,interval in intervals.items():
@@ -154,10 +129,8 @@ def update_graph(n_clicks, input_value):
     [State('stock-abv','value')]
 )
 def display_confirm(n_clicks,input_value):
-    intervals={'Intraday':'TIME_SERIES_INTRADAY',
-            'Last 100 days':'TIME_SERIES_DAILY',
-            'Last 20 years in Week':'TIME_SERIES_WEEKLY',
-            'Last 20 years in Month':'TIME_SERIES_MONTHLY'}
+    intervals={'Last 100 days':'TIME_SERIES_DAILY',
+            'Last 20 years in Week':'TIME_SERIES_WEEKLY'}
     if n_clicks>0:
         api_url = 'http://api:8000/stock/post'
         for title, interval in intervals.items():
