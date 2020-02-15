@@ -9,7 +9,6 @@ import time
 import dash_table
 
 def get_stock(symbol,interval):
-    #proxies={"http":"clientproxy.basf.net:8080","https":"clientproxy.basf.net:8080"}
     proxies={}
     api_url = 'http://api:8000/stock/get'
     req_url = '/'.join([api_url, symbol, interval])
