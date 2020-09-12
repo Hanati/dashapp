@@ -6,7 +6,8 @@ RUN pip install --no-cache dash \
         dash 
 
 WORKDIR /home
-ADD *.py /home/
+ADD main.py /home/
+ADD tabs/*.py /home/
 
 CMD ["python","main.py"]
 

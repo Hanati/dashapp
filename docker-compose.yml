@@ -22,6 +22,8 @@ services:
 
   dapp:
     image: myapp
+    depends_on: 
+      - api
     build:
       context: .
       dockerfile: Dockerfile_APP

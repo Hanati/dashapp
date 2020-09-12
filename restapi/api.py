@@ -44,6 +44,20 @@ def get_stock(stock_abv:str, stock_function: str):
     results=get_data_db(p_conn,stock_abv,stock_function)
     return results
 
+## get the list of tables
+@app.get("/stocks/")
+def get_all():
+    p_conn=init_conn()
+    cur=p_conn.cursor()
+    cur.execute("select tablename from pg_catalog.pg_tables where schemaname = 'public'")
+
+    results=[]
+    for res in cur.fetchall():
+        if res[0].find("daily")==-1:
+            continue
+        fra,label=res[0].split("_")[0:2]
+        results.append({"label":label,"value":f"{fra}:{label}"})
+    return results
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):
     return {"item_id": item_id, "q": q}
